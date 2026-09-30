@@ -13,7 +13,6 @@ class Analytical(BaseMethod):
     def __init__(self):
         pass
 
-    # ── Vanilla ───────────────────────────────────────────────────────────────
     def _price_vanilla(self, product, S0, T, r, sigma):
         K = product.K
         d1 = (np.log(S0 / K) + (0.5 * sigma**2 + r) * T) / (sigma * np.sqrt(T))
@@ -24,7 +23,6 @@ class Analytical(BaseMethod):
             price = K * np.exp(-r * T) * norm.cdf(-d2) - S0 * norm.cdf(-d1)
         return price, d1, d2
 
-    # ── Digital ───────────────────────────────────────────────────────────────
     def _price_digital(self, product, S0, T, r, sigma):
         K = product.K
         d2 = (np.log(S0 / K) + (r - 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
@@ -36,7 +34,6 @@ class Analytical(BaseMethod):
             case _:
                 raise ValueError(f"Unknown digital product: {product.name()}")
 
-    # ── Barrier (Reiner-Rubinstein, no dividends) ─────────────────────────────
     def _price_barrier(self, product, S0, T, r, sigma):
         K = product.K
         B = product.B
@@ -44,11 +41,9 @@ class Analytical(BaseMethod):
         rebate = getattr(product, "rebate", 0.0)
         sqrt_T = np.sqrt(T)
 
-        # ── Sign parameters ───────────────────────────────────────────────────
         phi = 1 if "Call" in name else -1
         eta = 1 if "Down" in name else -1
 
-        # ── Sanity checks ─────────────────────────────────────────────────────
         if eta == 1 and S0 <= B:
             raise ValueError(f"Down barrier requires S0 > B, got S0={S0}, B={B}")
         if eta == -1 and S0 >= B:
@@ -56,7 +51,6 @@ class Analytical(BaseMethod):
         if "Out" in name and rebate != 0.0:
             raise ValueError("Rebates are only supported for knock-in barriers")
 
-        # ── Core parameters ───────────────────────────────────────────────────
         lam = (r / sigma**2) + 0.5          # = 1 + mu
         vol = sigma * sqrt_T
         x1 = np.log(S0 / K) / vol + lam * vol
@@ -66,10 +60,9 @@ class Analytical(BaseMethod):
 
         disc = np.exp(-r * T)
         ratio = B / S0
-        ratio_lam = ratio ** (2 * lam)          # (B/S)^(2(mu+1))
-        ratio_lam2 = ratio ** (2 * lam - 2)     # (B/S)^(2mu)
+        ratio_lam = ratio ** (2 * lam)          
+        ratio_lam2 = ratio ** (2 * lam - 2)     
 
-        # ── Building blocks ───────────────────────────────────────────────────
         A = phi * S0 * norm.cdf(phi * x1) \
             - phi * K * disc * norm.cdf(phi * x1 - phi * vol)
 
@@ -82,11 +75,9 @@ class Analytical(BaseMethod):
         D = phi * S0 * ratio_lam * norm.cdf(eta * y2) \
             - phi * K * disc * ratio_lam2 * norm.cdf(eta * y2 - eta * vol)
 
-        # Rebate paid at expiry if a knock-in never activates
         E = rebate * disc * (norm.cdf(eta * x2 - eta * vol)
                              - ratio_lam2 * norm.cdf(eta * y2 - eta * vol))
 
-        # ── Barrier price by type ─────────────────────────────────────────────
         match name:
             case "CallDownIn":
                 price = C + E if K >= B else A - Bv + D + E
@@ -109,7 +100,6 @@ class Analytical(BaseMethod):
 
         return price
 
-    # ── Entry point ───────────────────────────────────────────────────────────
     def price(self, product, model, S0: float, T: float, r: float) -> PricingResult:
         if model.name() != "BlackScholes":
             raise ValueError(f"Analytical method only supports BlackScholes, got {model.name()}")
