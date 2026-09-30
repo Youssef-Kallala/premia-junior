@@ -27,7 +27,7 @@ class CallUpIn(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Call Up-In"
+        return "barrier"
 
 
 @register_product
@@ -54,7 +54,7 @@ class CallUpOut(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Call Up-Out"
+        return "barrier"
 
 
 @register_product
@@ -81,7 +81,7 @@ class CallDownIn(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Call Down-In"
+        return "barrier"
 
 
 @register_product
@@ -108,7 +108,7 @@ class CallDownOut(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Call Down-Out"
+        return "barrier"
 
 
 @register_product
@@ -135,7 +135,7 @@ class PutUpIn(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Put Up-In"
+        return "barrier"
 
 
 @register_product
@@ -162,7 +162,7 @@ class PutUpOut(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Put Up-Out"
+        return "barrier"
 
 
 @register_product
@@ -189,7 +189,7 @@ class PutDownIn(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Put Down-In"
+        return "barrier"
 
 
 @register_product
@@ -216,4 +216,4 @@ class PutDownOut(BaseProduct):
         }
 
     def option_type(self) -> str:
-        return "Put Down-Out"
+        return "barrier"
