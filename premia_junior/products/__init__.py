@@ -5,3 +5,4 @@ from .barrier import (
     CallUpIn, CallUpOut, CallDownIn, CallDownOut,
     PutUpIn, PutUpOut, PutDownIn, PutDownOut
 )
+from .asian import DiscreteAsianCall,DiscreteAsianPut

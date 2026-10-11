@@ -25,3 +25,21 @@ class Pricer:
                     f"{method.name()} does not support {product.exercise_type()} options.\n"
                     f"Allowed exercise types: {method.compatible_exercise_types}"
             )
+    def _check_compatibility(self, model, method, product):
+        if method.name() not in model.compatible_methods:
+            raise ValueError(
+                f"{method.name()} is not compatible with {model.name()}.\n"
+                f"Allowed methods: {model.compatible_methods}"
+            )
+        if hasattr(method, 'compatible_exercise_types'):
+            if product.exercise_type() not in method.compatible_exercise_types:
+                raise ValueError(
+                    f"{method.name()} does not support {product.exercise_type()} options.\n"
+                    f"Allowed exercise types: {method.compatible_exercise_types}"
+                )
+        if hasattr(method, 'compatible_option_types'):
+            if product.option_type() not in method.compatible_option_types:
+                raise ValueError(
+                    f"{method.name()} does not support {product.option_type()} products.\n"
+                    f"Allowed option types: {method.compatible_option_types}"
+                )

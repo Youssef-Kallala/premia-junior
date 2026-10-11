@@ -5,12 +5,13 @@ import numpy as np
 
 @register_method
 class LSM(BaseMethod):
+    compatible_exercise_types = ["american"]
+    compatible_option_types = ["call", "put"]
     def __init__(self,n_steps,n_paths,degree=3,seed=None):
         self.n_steps=n_steps
         self.n_paths=n_paths 
         self.degree=degree
         self.seed=seed  
-        compatible_exercise_types = ["american"]
     def price(self, product, model, S0, T, r):
         n_steps = self.n_steps
         n_paths = self.n_paths

@@ -6,8 +6,8 @@ import numpy as np
 
 @register_method
 class MonteCarlo(BaseMethod):
+    compatible_option_types = ["call", "put", "barrier", "digital", "asian"]
     def __init__(self,n_paths,n_steps,seed=None):
-        compatible_exercise_types = ["european"]
         self.n_paths=n_paths
         self.n_steps=n_steps
         self.seed=seed

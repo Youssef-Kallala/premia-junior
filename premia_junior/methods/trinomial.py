@@ -6,10 +6,10 @@ import numpy as np
 
 @register_method
 class TrinomialTree(BaseMethod):
+    compatible_exercise_types = ["european", "american"]
+    compatible_option_types = ["call", "put"]
     def __init__(self, n_steps):
         self.n_steps = n_steps
-        compatible_exercise_types = ["european", "american"]
-
     def price(self, product, model, S0, T, r):
         sigma = model.sigma
         N = self.n_steps
