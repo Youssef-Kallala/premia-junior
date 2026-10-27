@@ -21,8 +21,15 @@ class BaseModel(ABC):
     def name(cls)-> str:
         pass 
     
+    def with_params(self, **changes):
+        names = self.parameter_info().keys()
+        params = {k: v for k, v in self.parameters().items() if k in names}
+        return type(self)(**{**params, **changes})
+    
     @classmethod 
     @abstractmethod 
     def parameter_info(cls)->dict :
         pass 
+    
+
     

@@ -25,7 +25,7 @@ class BlackScholes(BaseModel):
 
     def parameters(self) -> dict:
         d = {}
-        d['drift'] = self.mu
+        d['mu'] = self.mu
         d['sigma'] = self.sigma
         return d
 
