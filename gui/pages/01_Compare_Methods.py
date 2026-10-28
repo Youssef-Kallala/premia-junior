@@ -158,3 +158,5 @@ if st.button("Compare", type="primary", disabled=not selected_methods):
 
 elif not selected_methods:
     st.info("Select at least one method above to compare.")
+    
+    

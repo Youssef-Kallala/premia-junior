@@ -27,7 +27,8 @@ class MonteCarlo(BaseMethod):
             "Model": model.name(),
              "Product": product.name()
         }
-        Pr = PricingResult(price=price,confidence_interval=(lower,upper),metadata=metadata) 
+        samples=payoff*np.exp(-r*T)
+        Pr = PricingResult(price=price,confidence_interval=(lower,upper),metadata=metadata,samples=samples) 
         return Pr
     @classmethod
     def name(cls) -> str:
